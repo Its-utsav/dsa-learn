@@ -57,6 +57,10 @@ def selection_sort(nums: List[int]) -> List[int]:
 
 
 def insertion_sort(nums: List[int]) -> List[int]:
+    """
+    TC -> O(n^2)
+    SC -> O(1)
+    """
     n = len(nums)
 
     for i in range(0, n):
