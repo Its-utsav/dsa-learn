@@ -155,8 +155,109 @@ class Solution:
 
         return el
 
+    def max_sub_array(self, nums: List[int]) -> int:
+        """
+        TC -> O(n),
+        SC -> O(1)
+        """
+        max_sum = float("-inf")
+        current_sum = 0
+        for num in nums:
+            current_sum += num
 
-def generateSumArrays(nums: List[int]) -> None:
+            max_sum = max(max_sum, current_sum)
+
+            if current_sum < 0:
+                current_sum = 0
+
+        """
+        Use full when all elements of array are less than zero
+        """
+        if max_sum < 0:
+            return 0
+        return max_sum
+
+    def stock_buy_and_sell_1(self, nums: List[int]) -> int:
+        max_profit = 0
+        current_profit = 0
+        n = len(nums)
+
+        for i in range(0, n):
+            for j in range(i + 1, n - 1):
+                current_profit = nums[j] - nums[i]
+                max_profit = max(current_profit, max_profit)
+
+        return max_profit
+
+    def stock_buy_and_sell_2(self, nums: List[int]) -> int:
+        max_profit = 0
+        min_profit = nums[0]
+        diff = 0
+
+        for num in nums:
+            diff = num - min_profit
+            max_profit = max(diff, max_profit)
+            min_profit = min(num, min_profit)
+
+        return max_profit
+
+    def rearrange_array_elements(self, nums: List[int]) -> List[int]:
+        n = len(nums) - 1
+        ans = [0] * n
+        pos_index, neg_index = 0, 1
+        for i in range(0, n):
+            if nums[i] > 0:
+                ans[pos_index] = nums[i]
+                pos_index += 2
+            else:
+                ans[neg_index] = nums[i]
+                neg_index += 2
+
+            print(ans)
+
+        return ans
+
+    def permutation(self, nums: List[int]) -> List[List[int]]:
+        """
+        https://pythontutor.com/render.html#code=def%20permutation%28%20nums%29%20%3A%0A%20%20%20%20ans%20%3D%20%5B%5D%0A%20%20%20%20%23%20base%20case%0A%20%20%20%20if%20len%28nums%29%20%3D%3D%201%3A%0A%20%20%20%20%20%20%20%20return%20%5Bnums.copy%28%29%5D%0A%20%20%20%20for%20i%20in%20range%28len%28nums%29%29%3A%0A%20%20%20%20%20%20%20%20%23%20store%20first%20el%0A%20%20%20%20%20%20%20%20n%20%3D%20nums.pop%280%29%0A%20%20%20%20%20%20%20%20permuts%20%3D%20permutation%28nums%29%0A%20%20%20%20%20%20%20%20%23%20add%20first%20one%20ele%0A%20%20%20%20%20%20%20%20for%20perm%20in%20permuts%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20perm.append%28n%29%0A%20%20%20%20%20%20%20%20%23%20store%20in%20ans%0A%20%20%20%20%20%20%20%20ans.extend%28permuts%29%0A%20%20%20%20%20%20%20%20nums.append%28n%29%0A%20%20%20%20return%20ans%0A%20%20%20%20%0Aprint%28permutation%28%5B1,2,3%5D%29%29&cumulative=true&curInstr=46&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=3&rawInputLstJSON=%5B%5D&textReferences=false
+        """
+        """
+        TC -> O(n! * n) n is the length of the array
+        SC -> O(n^2)
+        """
+        ans = []
+        # base case
+        if len(nums) == 1:
+            return [nums.copy()]
+
+        for i in range(len(nums)):
+
+            # store first el
+            n = nums.pop(0)
+            permuts = self.permutation(nums)
+            # add first one ele
+            for perm in permuts:
+                perm.append(n)
+
+            # store in ans
+            ans.extend(permuts)
+
+            nums.append(n)
+            print(f"i ={i} ,n = {n}, permuts = {permuts}, ans = {ans}, og=  {nums}")
+        return ans
+
+    def rotate(self, matrix: List[List[int]]) -> None:
+        ans = [[0] * len(matrix) for i in range(len(matrix))]
+        # ans = [[0] * len(matrix)] * len(matrix)
+        n = len(matrix)
+        for i in range(n):
+            for j in range(n):
+                ans[i][j] = matrix[i][j]
+        print(ans)
+        pass
+
+
+def generateSumArrays(nums: List[int]):
     ans = []
     for i in range(0, len(nums)):
         for j in range(i + 1, len(nums) + 1):
@@ -170,10 +271,62 @@ def generateSumArrays(nums: List[int]) -> None:
     print(ans)
 
 
+def rearrange_array_elements_2(nums: List[int]) -> List[int]:
+    ans = [0] * len(nums)
+    pos, neg = [], []
+
+    for num in nums:
+        if num > 0:
+            pos.append(num)
+        else:
+            neg.append(num)
+
+    for i in range(0, len(nums) // 2):
+        ans[2 * i] = pos[i]
+        ans[2 * i + 1] = neg[i]
+
+    return ans
+
+
+def rearrange_array_elements_3(nums: List[int]) -> List[int]:
+    pos, neg = [], []
+    ans = [0] * (len(nums))
+
+    for num in nums:
+        if num > 0:
+            pos.append(num)
+        else:
+            neg.append(num)
+
+    if len(pos) > len(neg):
+        # fill equal amount of elements
+        for i in range(0, len(neg)):
+            print(ans)
+            ans[i * 2] = pos[i]
+            ans[i * 2 + 1] = neg[i]
+
+        # now fill all postive values
+        index = len(neg) * 2
+        print(index, len(nums), len(pos))
+
+        for i in range(len(pos) - len(neg)):
+            ans[index] = pos[len(neg) + i]
+            index += 1
+    else:
+        for i in range(0, len(pos)):
+            ans[2 * i] = pos[i]
+            ans[2 * i + 1] = neg[i]
+
+        index = len(pos) * 2
+
+        for i in range(len(neg) - len(pos)):
+            ans[index] = neg[len(pos) + i]
+            index += 1
+
+    return ans
+
+
 s = Solution()
-# print(s.two_sum([2, 7, 11, 15], 9))
-# print(s.majorityElement2([2, 2, 1, 1, 1, 2, 2]))
-# print(s.two_sum([3, 3], 6))
-# print(s.missingNumber([0, 1]))
-# print(s.missingNumber([9, 6, 4, 2, 3, 5, 7, 0, 1]))
-print(generateSumArrays([1, 2, 3, 4]))
+a = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+print(s.rotate(a))
+# print(rearrange_array_elements_3([-1, -2, -4, -5, 3, 1]))
