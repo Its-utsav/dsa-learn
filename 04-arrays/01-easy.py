@@ -246,15 +246,177 @@ class Solution:
             print(f"i ={i} ,n = {n}, permuts = {permuts}, ans = {ans}, og=  {nums}")
         return ans
 
-    def rotate(self, matrix: List[List[int]]) -> None:
+    def rotate_1(self, matrix: List[List[int]]) -> None:
         ans = [[0] * len(matrix) for i in range(len(matrix))]
         # ans = [[0] * len(matrix)] * len(matrix)
         n = len(matrix)
         for i in range(n):
             for j in range(n):
-                ans[i][j] = matrix[i][j]
+                ans[j][n - i - 1] = matrix[i][j]
         print(ans)
-        pass
+
+    def rotate_2(self, matrix: List[List[int]]) -> None:
+        n = len(matrix)
+
+        # transponse
+        for i in range(n):
+            for j in range(i):
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+
+        #  reverese
+
+        for i in range(n):
+            matrix[i].reverse()
+
+    def setZeroes(self, matrix: List[List[int]]) -> None:
+        m = len(matrix)  # Number of row
+        n = len(matrix[0])  # Number of column
+
+        # row matrix [....][0]
+        # col matrix[0][....]
+        col0 = 1  #  track first column change
+        for i in range(m):
+            for j in range(n):
+                if matrix[i][j] == 0:
+                    matrix[i][0] = 0  # mark row
+
+                    # mark column
+                    if j != 0:
+                        matrix[0][j] = 0
+                    else:
+                        col0 = 0
+
+        # matrix[...][0] => 0
+        # matrix[0][...] => 0
+        # than marks rest of the elements
+
+        # mark element as 0 other than first row , column
+        for i in range(1, m):
+            for j in range(1, n):
+                if matrix[i][0] == 0 or matrix[0][j] == 0:
+                    matrix[i][j] = 0
+
+        # now remining part
+
+        # set column as 0
+        if col0 == 0:
+            for i in range(m):
+                matrix[0][i] = 0
+
+        # only first is 0
+        if matrix[0][0] == 0:
+
+            for j in range(m):
+                matrix[j][0] = 0
+
+        print(matrix)
+
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        m = len(matrix)
+        n = len(matrix[0])
+        ans = []
+        top, left = 0, 0
+        right, bottom = n - 1, m - 1
+
+        while left <= right and top <= bottom:
+            # left -> right (top side)
+            for i in range(left, right + 1):
+                ans.append(matrix[top][i])
+
+            top += 1
+
+            # right -> bottom (right side)
+            for j in range(top, bottom + 1):
+                ans.append(matrix[j][right])
+
+            right -= 1
+
+            if top <= bottom:
+                # right -> left (bottom side)
+                for i in range(right, left - 1, -1):
+                    ans.append(matrix[bottom][i])
+
+                bottom -= 1
+
+            if left <= right:
+                # bottom -> top (left)
+                for j in range(bottom, top - 1, -1):
+                    ans.append(matrix[j][left])
+
+                left += 1
+
+        return ans
+
+    def nextPermutation(self, nums: List[int]) -> None:
+        index = -1
+        n = len(nums)
+
+        # find the break point
+        for i in range(n - 2, 0, -1):
+            if nums[i] < nums[i + 1]:
+                index = i
+                break
+
+        # handle break point not found tha given permutaion is the largest
+        if index == -1:
+            nums.reverse()
+            return
+
+        # swap the break point element with nearest greater element
+
+        for i in range(n - 1, 0, -1):
+            if nums[i] > nums[index]:
+                nums[i], nums[index] = nums[index], nums[i]
+
+        # reverse the reaminign elements index + 1 -> n-1
+        nums[index + 1 :] = reversed(nums[index + 1 :])
+        print(nums)
+
+    def leaders(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+
+        res = []
+        right_max = nums[n - 1]
+        res.append(right_max)
+        # print(res)
+        for i in range(n - 2, -1, -1):
+            if nums[i] >= right_max:
+                res.append(nums[i])
+                right_max = nums[i]
+
+        print(res)
+        res = list(reversed(res))
+        # i, j = 0, len(res) - 1
+        # while i <= len(res) // 2:
+        #     temp = res[i]
+        #     res[i] = res[j]
+        #     res[j] = temp
+        #     i += 1
+        #     j -= 1
+
+        return res
+
+    def linear_search(self, nums: List[int], x: int) -> bool:
+        for num in nums:
+            if num == x:
+                return True
+
+        return False
+
+    def longestConsecutive(self, nums: List[int]) -> int:
+        longest = 1
+
+        n = len(nums)
+        for i in range(n):
+            current_num = nums[i]
+            current_count = 1
+            while self.linear_search(nums, current_num + 1):
+                current_count += 1
+                current_num += 1
+
+            longest = max(current_count, longest)
+
+        return longest
 
 
 def generateSumArrays(nums: List[int]):
@@ -326,7 +488,108 @@ def rearrange_array_elements_3(nums: List[int]) -> List[int]:
     return ans
 
 
+def setZeroes_1(matrix: List[List[int]]) -> None:
+    m = len(matrix)
+    n = len(matrix[0])
+
+    row = [0] * m
+    col = [0] * n
+
+    # set 1 for  row , column  where element is 0
+    for i in range(m):
+        for j in range(n):
+            if matrix[i][j] == 0:
+                row[i] = 1
+                col[j] = 1
+
+    for i in range(m):
+        for j in range(n):
+            if row[i] == 1 or col[j] == 1:
+                matrix[i][j] = 0
+
+    print(matrix)
+
+
+def setZeroes_2(matrix: List[List[int]]) -> None:
+    pass
+
+
+def genper(nums: List[int], ans: List[List[int]], index) -> None:
+    if index >= len(nums):
+        ans.append(nums[:])
+        return
+    for i in range(index, len(nums)):
+        nums[i], nums[index] = nums[index], nums[i]
+        genper(nums, ans, index + 1)
+        nums[i], nums[index] = nums[index], nums[i]
+
+
+def generate_permutation_in_sorted(nums: List[int]) -> List[List[int]]:
+    ans = []
+    genper(nums, ans, 0)
+    return ans
+
+
+def nextPermutation(nums: List[int]) -> None:
+    permutations = generate_permutation_in_sorted(nums)
+    # print(permutations)
+    for i in range(len(permutations)):
+        if nums == permutations[i]:
+            return permutations[i + 1]
+
+
+def linear_search(nums: List[int], x: int) -> bool:
+    for num in nums:
+        if num == x:
+            return True
+    return False
+
+
+def longestConsecutive_1(nums: List[int]) -> int:
+    """
+    TC -> O(n^2)
+    SC -> O(1)
+    """
+    longest = 1
+    n = len(nums)
+    for i in range(n):
+        current_num = nums[i]
+        current_count = 1
+        while linear_search(nums, current_num + 1):
+            current_count += 1
+            current_num += 1
+        longest = max(current_count, longest)
+    return longest
+
+
+def longestConsecutive_2(nums: List[int]) -> int:
+    """
+    TC -> O(n^2)
+    SC -> O(1)
+    """
+    n = len(nums)
+    longest = 1
+    count = 0
+    last_small = float("-inf")
+    nums.sort()  # O(log n)
+
+    for i in range(n):
+        if nums[i] - 1 == last_small:
+            count += 1
+            last_small = nums[i]
+        elif nums[i] != last_small:
+            count = 1
+            last_small = nums[i]
+
+        longest = max(longest, count)
+
+    return longest
+
+
 s = Solution()
-a = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-print(s.rotate(a))
-# print(rearrange_array_elements_3([-1, -2, -4, -5, 3, 1]))
+a = [[0, 1, 2, 0], [3, 4, 5, 2], [1, 3, 1, 5]]
+b = [[0, 1]]
+c = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+d = [100, 4, 200, 1, 3, 2]
+# print(s.longestConsecutive(d))
+print(longestConsecutive_2(d))
