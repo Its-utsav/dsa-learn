@@ -404,17 +404,20 @@ class Solution:
         return False
 
     def longestConsecutive(self, nums: List[int]) -> int:
-        longest = 1
+        num_set = set(nums)
+        longest = 0
+        count = 0
+        for num in num_set:
+            if num - 1 not in num_set:
+                count = 1
+                current_num = num
 
-        n = len(nums)
-        for i in range(n):
-            current_num = nums[i]
-            current_count = 1
-            while self.linear_search(nums, current_num + 1):
-                current_count += 1
-                current_num += 1
+                print(current_num)
+                while current_num + 1 in num_set:
+                    count += 1
+                    current_num += 1
 
-            longest = max(current_count, longest)
+            longest = max(count, longest)
 
         return longest
 
@@ -591,5 +594,5 @@ a = [[0, 1, 2, 0], [3, 4, 5, 2], [1, 3, 1, 5]]
 b = [[0, 1]]
 c = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 d = [100, 4, 200, 1, 3, 2]
-# print(s.longestConsecutive(d))
-print(longestConsecutive_2(d))
+print(s.longestConsecutive(d))
+# print(longestConsecutive_2(d))
