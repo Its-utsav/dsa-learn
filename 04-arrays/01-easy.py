@@ -421,6 +421,20 @@ class Solution:
 
         return longest
 
+    def removeElement(self, nums: List[int], val: int) -> int:
+        count = 0
+        temp = []
+        for num in nums:
+            if num == val:
+                count += 1
+            elif num != val:
+                temp.append(num)
+        ans = len(temp)
+        for i in range(ans, count):
+            temp.append("_")
+
+        return ans
+
 
 def generateSumArrays(nums: List[int]):
     ans = []
@@ -593,6 +607,6 @@ s = Solution()
 a = [[0, 1, 2, 0], [3, 4, 5, 2], [1, 3, 1, 5]]
 b = [[0, 1]]
 c = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-d = [100, 4, 200, 1, 3, 2]
-print(s.longestConsecutive(d))
+d = [0, 1, 2, 2, 3, 0, 4, 2]
+print(s.removeElement(d, 2))
 # print(longestConsecutive_2(d))
