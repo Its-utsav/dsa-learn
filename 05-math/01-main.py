@@ -26,12 +26,11 @@ def pascal_triangle_row_2(num: int):
 def getRow(rowIndex: int) -> List[int]:
     row = [1]
     ans = 1
-    prev = 1
-    for i in range(1, rowIndex):
-        ans = ans * (rowIndex - i + 1)
-        ans = ans // i
+    for i in range(0, rowIndex):
+        ans = ans * (rowIndex - i)
+        ans = ans // (i + 1)
+        print(ans)
         row.append(ans)
-        prev = ans
 
     return row
 

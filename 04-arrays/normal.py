@@ -74,4 +74,88 @@ def three_sum_v2(nums: List[int]) -> List[List[int]]:
     return ans
 
 
-print(three_sum_v2([-1, 0, 1, 2, -1, -4]))
+def pascal_getRow(rowIndex: int) -> List[int]:
+    row = [1]
+    val = 1
+    for i in range(1, rowIndex):
+        val = val * (rowIndex - 1) // i
+        row.append(val)
+
+    return row
+
+
+def four_sum_v1(nums: List[int], target: int) -> List[List[int]]:
+    s: Set[Tuple[int]] = set()
+    n = len(nums)
+
+    for i in range(n):
+        for j in range(i + 1, n):
+            for k in range(j + 1, n):
+                for l in range(k + 1, n):
+                    if nums[i] + nums[j] + nums[k] + nums[l] == target:
+                        temp = [nums[i], nums[j], nums[k], nums[l]]
+
+                        temp.sort()
+                        temp = tuple(temp)
+                        s.add(temp)
+
+    ans = [list(i) for i in s]
+    return ans
+
+
+def four_sum_v2(nums: List[int], target: int) -> List[List[int]]:
+    s = set()
+    n = len(nums)
+
+    for i in range(n):
+        for j in range(i + 1, n):
+            hash_set = set()
+            for k in range(j + 1, n):
+                temp_sum = nums[i] + nums[j] + nums[k]
+                req = target - temp_sum
+
+                if req in hash_set:
+                    temp = [nums[i], nums[j], nums[k], req]
+                    temp.sort()
+                    temp = tuple(temp)
+                    s.add(temp)
+
+                hash_set.add(nums[k])
+    # print(s)
+    ans = [list(i) for i in s]
+    return ans
+
+
+def roman_to_int(s: str) -> int:
+    val = {
+        "I": 1,
+        "V": 5,
+        "X": 10,
+        "L": 50,
+        "C": 100,
+        "D": 500,
+        "M": 1000,
+    }
+
+    ans = 0
+    for ch in s:
+        ans += val[ch]
+        print(ans, val[ch])
+    return ans
+
+
+def lengthOfLastWord(s: str) -> int:
+    l = 0
+    s = s.strip()
+
+    for i in range(len(s) - 1, 0, -1):
+        print(s[i] != " ")
+        if s[i] != " ":
+            l += 1
+        else:
+            break
+
+    return l
+
+
+print(lengthOfLastWord("Hello World"))

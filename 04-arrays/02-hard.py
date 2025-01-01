@@ -101,6 +101,166 @@ class Solution:
 
         return ans
 
+    def four_sum(self, nums: List[int], target: int) -> List[List[int]]:
+        ans = []
+        nums.sort()
+        n = len(nums)
+
+        # loop over the array
+        for i in range(n):
+            # i will not same as previous elemenet avoid duplicates
+            # for the first 0 index element previous element not possible
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+
+            # need j
+            for j in range(i + 1, n):
+                # j will not same as previous element avoid duplicates
+                # firstly we considerd the element at j
+                if j > i + 1 and nums[j] == nums[j - 1]:
+                    continue
+
+                # poniters
+                k = j + 1
+                l = n - 1
+
+                while k < l:
+                    total_sum = nums[i] + nums[j] + nums[k] + nums[l]
+
+                    if total_sum < target:
+                        # need more
+                        k += 1
+                    elif total_sum > target:
+                        # need less
+                        l -= 1
+                    elif total_sum == target:
+                        # yes we find 4 elements
+
+                        temp = [nums[i], nums[j], nums[k], nums[l]]
+                        ans.append(temp)
+                        k += 1
+                        l -= 1
+                        # once 4 element found than pointer will move
+                        # ensuring that they are not same element as previous element
+
+                        # pointers are moving so we need to ensure k did not cross l
+
+                        while k < l and nums[k] == nums[k - 1]:
+                            k += 1
+
+                        while k < l and nums[l] == nums[l + 1]:
+                            l -= 1
+
+        print(ans)
+        return ans
+
+    def threeSumClosest(self, nums: List[int], target: int) -> int:
+        closest = float("-inf")
+        nums.sort()
+        n = len(nums)
+        for i in range(n):
+            # poniter left , right
+            left = i + 1
+            right = n - 1
+            # left pointer not cross right pointer
+            while left < right:
+                # count the sum
+                total = nums[i] + nums[left] + nums[right]
+
+                if abs(total - target) < abs(closest - target):
+                    closest = total
+                elif total < target:
+                    left += 1
+                elif total > target:
+                    right -= 1
+
+                # else:
+                #     return closest
+
+            # if sum - target < closest - target
+            # update the closet with sum
+            # if sum < target
+            # need more value
+            # if sum > target
+            # need less value
+
+            # return closet
+
+            pass
+
+        return closest
+
+    def maxlen(self, arr: List[int]) -> int:
+        num_map = {}
+        sum_ = 0
+        ans = 0
+        n = len(arr)
+
+        for i in range(n):
+            sum_ += arr[i]
+            if sum_ == 0:
+                ans = i + 1
+
+            else:
+                if sum_ in num_map:
+                    ans = max(ans, i - num_map[sum_])
+                else:
+                    num_map[sum_] = i
+        print(sum_)
+        return ans
+
+    def over_lap_arr(self, intervals: List[List[int]]) -> List[int]:
+        # # sort the array
+        # # ans array for return
+        # ans = []
+        # n = len(intervals)
+        # # itereate over array
+        # for i in range(n):
+        #     # take first (start) and second (end) value
+        #     start = intervals[i][0]
+        #     end = intervals[i][1]
+
+        #     # if current overlap array is already part of interval than skip it
+        #     if ans and ans[-1][1] >= end:
+        #         continue
+
+        #     # stand at once time check other
+        #     for j in range(i + 1, n):
+
+        #         # if current array[j][1] second value is less than end value
+        #         if intervals[j][0] < end:
+        #             end = max(end, intervals[j][1])
+        #         else:
+        #             break
+        #         # than end value should be bigger of end and arr[j][1]
+        #         # if current array[j][1] second value is greater than end value skip it
+        #     ans.append([start, end])
+        # return ans
+        ans = []
+        n = len(intervals)
+        intervals.sort()
+        for i in range(n):
+            if len(ans) == 0 or ans[-1][1] < intervals[i][0]:
+                ans.append(intervals[i])
+            else:
+                ans[-1][1] = max(ans[-1][1], intervals[i][0])
+        return ans
+
+    def mereg_sorted_arr(
+        self, nums1: List[int], m: int, nums2: List[int], n: int
+    ) -> None:
+        k = 0
+        for i in range(m, len(nums1)):
+            nums1[i] = nums2[k]
+            if k < len(nums2):
+                k += 1
+        nums1.sort()
+
 
 s = Solution()
-print(s.three_sum([1, -1, -1, 0]))
+a = [1, 2, 3, 0, 0, 0]
+b = [2, 5, 6]
+a1 = 3
+b1 = 3
+print(s.mereg_sorted_arr(a, a1, b, b1))
+print(a)

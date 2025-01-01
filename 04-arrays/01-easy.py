@@ -1,3 +1,4 @@
+from math import inf
 from typing import List
 
 
@@ -435,6 +436,30 @@ class Solution:
 
         return ans
 
+    def single_number_ii(self, nums: List[int]) -> int:
+        num_hash = {}
+        for num in nums:
+            num_hash[num] = num_hash.get(num, 0) + 1
+
+        for num in num_hash:
+            if num_hash.get(num) == 1:
+                return num
+
+    def third_max(self, nums: List[int]) -> int:
+        a = b = c = float("-inf")
+
+        for n in nums:
+            if n in (a, b, c):
+                continue
+            if n > a:
+                n, a = a, n
+            if n > b:
+                n, b = b, n
+            if n > c:
+                n, c = c, n
+
+        return a if c == -float("inf") else c
+
 
 def generateSumArrays(nums: List[int]):
     ans = []
@@ -607,6 +632,6 @@ s = Solution()
 a = [[0, 1, 2, 0], [3, 4, 5, 2], [1, 3, 1, 5]]
 b = [[0, 1]]
 c = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-d = [0, 1, 2, 2, 3, 0, 4, 2]
-print(s.removeElement(d, 2))
+d = [2, 2, 3, 1]
+print(s.third_max([1, 2, 2, 5, 3, 5]))
 # print(longestConsecutive_2(d))
