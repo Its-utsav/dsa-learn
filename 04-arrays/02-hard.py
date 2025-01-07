@@ -256,11 +256,29 @@ class Solution:
                 k += 1
         nums1.sort()
 
+    def max_product(self, nums: List[int]) -> int:
+        maxi = 1
+        prefix = 0
+        suffix = 0
+        n = len(nums)
+        for i in range(n):
+            if prefix == 0:
+                prefix = 1
+            if suffix == 0:
+                suffix = 1
+
+            prefix = prefix * nums[i]
+            suffix = suffix * nums[n - i - 1]
+
+            maxi = max(maxi, max(prefix, suffix))
+        return maxi
+
 
 s = Solution()
-a = [1, 2, 3, 0, 0, 0]
-b = [2, 5, 6]
-a1 = 3
-b1 = 3
-print(s.mereg_sorted_arr(a, a1, b, b1))
-print(a)
+# a = [1, 2, 3, 0, 0, 0]
+# b = [2, 5, 6]
+# a1 = 3
+# b1 = 3
+# print(s.mereg_sorted_arr(a, a1, b, b1))
+# print(a)
+print(s.max_product([2, 3, -2, 4]))
