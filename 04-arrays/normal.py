@@ -1,3 +1,4 @@
+import math
 from typing import List, Set, Tuple
 
 from collections import defaultdict
@@ -460,7 +461,161 @@ def firstUniqChar(s: str) -> int:
     return -1
 
 
-print(firstUniqChar("loveleetcode"))
+def topKFrequent(nums: List[int], k: int) -> List[int]:
+    ans = []
+    bucket = [[] for i in range(len(nums) + 1)]
+    # bucket that will store total occurence of elemenet at index
+    count = {}  # store the count of each element
+
+    for n in nums:
+        count[n] = count.get(n, 0) + 1
+
+    # add element list at bucket
+    # index - list of values
+    # 0
+    # 1 - [3]
+    # 2 - [2]
+    # 3 - [1]
+    print(count)
+    for n, c in count.items():
+        bucket[n].append(c)
+    # now backword travers from bucket array
+    print(bucket)
+    for i in range(len(bucket) - 1, 0, -1):
+        # if len(bucket[i]) == 0:
+        #     continue
+        # backet array is storing arrays
+        for n in bucket[i]:
+            ans.append(n)
+
+            if len(ans) == k:
+                return ans
+
+
+def prefixCount(words: List[str], pref: str) -> int:
+    # count = 0
+    # temp = 0
+    # for w in words:
+    #     for i in range(len(pref)):
+    #         if i < len(w) and w[i] == pref[i]:
+    #             temp += 1
+
+    #     if temp == len(pref):
+    #         count += 1
+    #     temp = 0
+    # return count
+
+    count = 0
+    for w in words:
+        if w.startswith(pref):
+            count += 1
+
+    return count
+
+
+def findMissingAndRepeatingNumber(a: List[int]) -> List[int]:
+    n = len(a)
+    s1, s2 = 0, 0
+    n1 = (n * (n + 1)) // 2
+    n2 = (n * (n + 1) * (2 * n + 1)) // 6
+    # v1 = s1 - n1
+    # v2 = s2 - n2
+    for num in a:
+        s1 += num
+        s2 += num * num
+
+    v1 = s1 - n1
+    v2 = s2 - n2
+    v2 = v2 // v1
+
+    # x , y
+    x = (v1 + v2) // 2
+    y = x - v1
+    return [x, y]
+
+
+def productExceptSelf(nums: List[int]) -> List[int]:
+    n = len(nums)
+    prefix = [0] * n
+    suffix = [0] * n
+    ans = [0] * n
+
+    prefix[0] = 1
+    suffix[n - 1] = 1
+    for i in range(1, n):
+        prefix[i] = nums[i - 1] * prefix[i - 1]
+
+    for i in range(n - 2, -1, -1):
+        suffix[i] = nums[i + 1] * suffix[i + 1]
+
+    for i in range(n):
+        ans[i] = prefix[i] * suffix[i]
+
+    return ans
+
+
+def merge_array(a: List[int], start: int, mid: int, end: int) -> int:
+    left = start
+    right = mid + 1
+    temp = []
+    count = 0
+    while left <= mid and right <= end:
+        if a[left] <= a[right]:
+            temp.append(a[left])
+            left += 1
+        else:
+            temp.append(a[right])
+            count += mid - left + 1
+            right += 1
+
+    # left array have some element
+    while left <= mid:
+        temp.append(a[left])
+        left += 1
+
+    # right array have some element
+    while right <= end:
+        temp.append(a[right])
+        right += 1
+
+    # replace original elements
+    for i in range(start, end + 1):
+        a[i] = temp[i - start]
+
+    return count
+
+
+def merge_sort(a: List[int], start: int, end: int) -> int:
+    count = 0
+    if start >= end:
+        return count
+    mid = math.floor((start + end) // 2)
+
+    count += merge_sort(a, start, mid)  # left
+    count += merge_sort(a, mid + 1, end)  # right
+    count += merge_array(a, start, mid, end)  # merge Array
+    return count
+
+
+def numberOfInversions(a: List[int], n: int) -> int:
+    count = merge_sort(a, 0, n - 1)
+    # print(a)
+    return count
+
+
+def perfect_num(num: int) -> bool:
+    c = 1
+    for i in range(1, num):
+        if i % num == 0:
+            c += i
+    print(c)
+    return c == num
+
+def lol(name:str) -> str:
+    return f'Hello {name}'
+# print(findMissingAndRepeatingNumber([1, 2, 3, 2]))
+print(perfect_num(28))
+# print(topKFrequent([1, 1, 1, 2, 2, 3, 4, 5, 6], 2))
 
 
 # print(findUnion([2, 2, 3, 4, 5], [1, 1, 2, 3, 4]))
