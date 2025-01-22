@@ -603,18 +603,61 @@ def numberOfInversions(a: List[int], n: int) -> int:
     return count
 
 
-def perfect_num(num: int) -> bool:
-    c = 1
-    for i in range(1, num):
-        if i % num == 0:
-            c += i
-    print(c)
-    return c == num
+# print(lengthOfLongestSubstring("pwwkew"))
+"utrsav".lower()
 
-def lol(name:str) -> str:
-    return f'Hello {name}'
+
+def isAlph(ch: str) -> bool:
+    val = ord(ch)
+    print(ch)
+    if (
+        (val >= 48 and val <= 57)
+        or (val >= 65 and val <= 90)
+        or (val >= 97 and val <= 122)
+    ):
+        return True
+    return False
+
+
+def isPalindrome(s: str) -> bool:
+    s = s.lower()
+
+    n_str = ""
+    for ch in s:
+        if isAlph(ch):
+            n_str += ch
+
+    left = 0
+    right = len(n_str) - 1
+    print(n_str)
+    while left <= right:
+        if n_str[left] != n_str[right]:
+            return False
+
+        left += 1
+        right -= 1
+    return True
+
+
+def median(nums1: List[int], nums2: List[int]) -> float:
+    temp = nums1 + nums2
+
+    temp.sort()
+
+    if len(temp) % 2 == 0:
+        first = temp[(len(temp) - 1) // 2]
+        second = temp[(len(temp)) // 2]
+        return (first + second) / 2
+    else:
+        return float(temp[len(temp) // 2])
+
+
+# print(median([1, 2], [3, 4]))
+# print(median([1, 3], [2, 7]))
+# print(median([2, 2, 4, 4], [2, 2, 2, 4, 4]))
+print(isPalindrome("0P"))
 # print(findMissingAndRepeatingNumber([1, 2, 3, 2]))
-print(perfect_num(28))
+# print(fourSumCount([1, 2], [-2, -1], [-1, 2], [0, 2]))
 # print(topKFrequent([1, 1, 1, 2, 2, 3, 4, 5, 6], 2))
 
 

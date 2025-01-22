@@ -86,30 +86,103 @@ class Binary_Search_Solution:
         return []
 
     def searching_rotated_sorted(self, nums: List[int], target: int) -> int:
-        nums.sort()
         n = len(nums)
-        print(nums)
         low = 0
         high = n - 1
 
         while low <= high:
-            mid = (low + high) // 2
+            mid = (high + low) // 2
+            # print(nums[low:high], nums[mid])
 
             if nums[mid] == target:
                 return mid
-            elif target > nums[mid]:
-                low = mid + 1
+
+            # identify sorted half
+            if nums[low] <= nums[mid]:
+                # left side is sorted
+                if nums[low] <= target <= nums[mid]:
+                    # check if target located between sorted half range
+                    # close to the target
+                    # if yes than high = mid -1
+                    high = mid - 1
+                else:
+                    # no means need more higher value
+                    # low should be increse
+                    low = mid + 1
+                # no than  low = mid + 1
+
             else:
+                # right side is sorted
+                if nums[mid] <= target <= nums[high]:
+                    # check if target located between sorted half range
+                    low = mid + 1
+                else:
+                    high = mid - 1
+            # if yes than low = mid + 1
+            # no than high = mid - 1
+        return -1
 
-                high = mid - 1
+    def searching_rotated_sorted_with_duplicates(
+        self, nums: List[int], target: int
+    ) -> bool:
+        n = len(nums)
+        low = 0
+        high = n - 1
 
+        while low <= high:
+            mid = (high + low) // 2
+            print(nums[low:high], nums[mid])
+
+            if nums[mid] == target:
+                return True
+
+            if nums[low] == nums[mid] == nums[high]:
+                low += 1
+                high -= 1
+                continue
+            # identify sorted half
+            if nums[low] <= nums[mid]:
+                # left side is sorted
+                if nums[low] <= target <= nums[mid]:
+                    # check if target located between sorted half range
+                    # close to the target
+                    # if yes than high = mid -1
+                    high = mid - 1
+                else:
+                    # no means need more higher value
+                    # low should be increse
+                    low = mid + 1
+                # no than  low = mid + 1
+
+            else:
+                # right side is sorted
+                if nums[mid] <= target <= nums[high]:
+                    # check if target located between sorted half range
+                    low = mid + 1
+                else:
+                    high = mid - 1
+            # if yes than low = mid + 1
+            # no than high = mid - 1
+        return False
+
+    def find_min(self, nums: List[int]) -> int:
+        return min(nums)
+
+    def find_peak(self, nums: List[int]) -> int:
+        n = len(nums)
+        for i in range(len(nums)):
+            if (i == 0 or nums[i - 1] < nums[i]) and (
+                i == n - 1 and nums[i] > nums[i - 1]
+            ):
+                return i
         return -1
 
 
-def main():
+def main() -> None:
     s = Binary_Search_Solution()
-    arr = [4, 5, 6, 7, 0, 1, 2]
-    ans = s.searching_rotated_sorted(arr, 0)
+    arr = [3, 2, 1]  # [1,2,1,3,5,6,4]
+
+    ans = s.find_peak(arr)
     print(ans)
 
 

@@ -4,7 +4,6 @@ from typing import List
 
 class Solution:
     def missingNumber(self, nums: List[int]) -> int:
-
         n = len(nums)
         ans = n * (n + 1) // 2
         for num in nums:
@@ -232,7 +231,6 @@ class Solution:
             return [nums.copy()]
 
         for i in range(len(nums)):
-
             # store first el
             n = nums.pop(0)
             permuts = self.permutation(nums)
@@ -306,7 +304,6 @@ class Solution:
 
         # only first is 0
         if matrix[0][0] == 0:
-
             for j in range(m):
                 matrix[j][0] = 0
 
