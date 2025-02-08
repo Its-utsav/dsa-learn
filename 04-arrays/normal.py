@@ -40,7 +40,6 @@ def majority_element_ii_v2(nums: List[int]) -> int:
 
 
 def three_sum_v1(nums: List[int]) -> List[List[int]]:
-
     s = set()  # set due to only uniue
     n = len(nums)
     for i in range(n):
@@ -207,7 +206,6 @@ def findUnion(a, b):
             left += 1
 
         else:
-
             if len(ans) == 0 or ans[-1] != b[right]:
                 ans.append(a[right])
 
@@ -366,7 +364,7 @@ def isIsomorphic_v2(s: str, t: str) -> bool:
 
     for i in range(len(s)):
         if (s[i] in mpST and mpST[s[i]] != t[i]) or (
-            (t[i] in mpTS and mpTS[t[i]] != s[i])
+            t[i] in mpTS and mpTS[t[i]] != s[i]
         ):
             return False
 
@@ -380,7 +378,6 @@ def remove_duplicates(nums: List[int]) -> int:
     j = 0
     c = 0
     for i in range(1, len(nums) - 1):
-
         if nums[i] == j:
             print(f"match at {i} {nums[i]} {j}")
             c += 1
@@ -604,7 +601,6 @@ def numberOfInversions(a: List[int], n: int) -> int:
 
 
 # print(lengthOfLongestSubstring("pwwkew"))
-"utrsav".lower()
 
 
 def isAlph(ch: str) -> bool:
@@ -652,10 +648,112 @@ def median(nums1: List[int], nums2: List[int]) -> float:
         return float(temp[len(temp) // 2])
 
 
+def max_area(height: List[int]) -> int:
+    max_water = 0
+    n = len(height)
+    for i in range(n):
+        for j in range(i + 1, n):
+            w = j - i
+            l = min(height[i], height[j])
+            area = l * w
+            max_water = max(area, max_water)
+            print(area, max_water)
+    return max_water
+
+
+def numRescueBoats(people: List[int], limit: int) -> int:
+    """
+    https://leetcode.com/problems/boats-to-save-people/description/
+    TAKES
+    1. Each boat have only two people we can't add more than two people
+    2. Find Minimum Number of boat
+    """
+    ans = 0
+    people.sort()
+    # [4,7,1,3,5,9,2,8,6] -> [1,2,3,4,5,6,7,8,9]
+    # 1 + 9 = 10 <= 10
+    # 2 + 8 = 10 <= 10
+    # 3 + 7 = 10 <= 10
+    # 4 + 6 = 10 <= 10
+    # 5
+    left_p, right_p = 0, len(people) - 1
+
+    while left_p <= right_p:
+        total = people[left_p] + people[right_p]
+
+        # if total <= limit:
+        #     ans += 1
+        #     left_p += 1
+        #     right_p -= 1
+        # else:
+        #     ans += 1
+        #     right_p -= 1
+
+        if total <= limit:
+            left_p += 1
+        ans += 1
+        right_p -= 1
+
+    return ans
+
+
+def lol(nums: List[int]) -> int:
+    ans = 0
+    # create a sub array
+    # check if it is increasing or decrsing
+    n = len(nums)
+    for i in range(0, n):
+        up = 0
+        down = 0
+        for j in range(i, n):
+            for k in range(i, j):
+                print(nums[i:j])
+                if nums[k] < nums[j]:
+                    up += 1
+                    print(nums[k], nums[j], up, "Up")
+                elif nums[k] > nums[j]:
+                    down += 1
+                    print(nums[k], nums[j], down, "down")
+                elif nums[k] == nums[j]:
+                    up = 0
+                    down = 0
+
+        ans = max(ans, max(up, down))
+    return ans
+
+
+def sum_square(n: int) -> List[int]:
+    ans = []
+    # left, right = 0, n
+    i = 0
+
+    while i <= n:
+        for j in range(0, n + 1):
+            for k in range(0, n + 1):
+                # print(i, j, k)
+                left = j * j
+                right = k * k
+                if left > i or right > i:
+                    break
+                temp = left + right
+
+                if temp == i and temp not in ans:
+                    ans.append(i)
+                if temp > i:
+                    break
+
+        i += 1
+
+    return ans
+
+
+print(sum_square(50))
+# print(numRescueBoats([1, 2], 3) == 1)
+# print(numRescueBoats([3, 2, 2, 1], 3) == 3)
+# print(numRescueBoats([3, 5, 3, 4], 5) == 4)
 # print(median([1, 2], [3, 4]))
 # print(median([1, 3], [2, 7]))
 # print(median([2, 2, 4, 4], [2, 2, 2, 4, 4]))
-print(isPalindrome("0P"))
 # print(findMissingAndRepeatingNumber([1, 2, 3, 2]))
 # print(fourSumCount([1, 2], [-2, -1], [-1, 2], [0, 2]))
 # print(topKFrequent([1, 1, 1, 2, 2, 3, 4, 5, 6], 2))
