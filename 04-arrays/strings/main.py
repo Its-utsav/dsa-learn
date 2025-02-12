@@ -113,11 +113,62 @@ class Solution:
 
         return "".join(ans)
 
+    def removeOccurrences(self, s: str, part: str) -> str:
+        """
+        ans = ""
+        s = list(s)
+        n = len(s)
+        n2 = len(part)
+        i = 0
+
+
+        while i < n:
+            if s[i] is None:
+                continue
+            # Matched first word
+            if s[i] == part[0]:
+                # Check for other words also
+                temp = str(s[i])
+                m = i + 1
+
+                for j in range(1, n2):
+                    if m < n and s[m] == part[j] and s[m] is not None:
+                        temp += str(s[m])
+                    else:
+                        break
+                    m += 1
+
+                if temp == part:
+                    for l in range(i, m):
+                        s[l] = None
+
+                    i = m
+
+                print(temp)
+
+            i += 1
+
+        """
+        n2 = len(part)
+        ans = []
+        for ch in s:
+            ans.append(ch)
+
+            if ch == part[-1]:
+                print(ans, ans[-n2:], part)
+                if part == "".join(ans[-n2:]):
+                    del ans[-n2:]
+                    print("answer ", ans)
+
+        print(ans)
+        return "".join(ans)
+
 
 x = Solution()
-a = x.reverse_vowels("IceCreAm")
-print(a)
-print(a)
+a = x.removeOccurrences("daabcbaabcbc", "abc")
+print(x.removeOccurrences("axxxxyyyyb", "xy"))
+# print(a)
+# print(a)
 
 # print(x.reverse_words("  hello world  "))
 # print(x.reverse_words("a good   example"))

@@ -722,32 +722,83 @@ def lol(nums: List[int]) -> int:
     return ans
 
 
-def sum_square(n: int) -> List[int]:
-    ans = []
-    # left, right = 0, n
-    i = 0
+def check_char(char: str) -> bool:
+    if char is None:
+        return False
+    asc = ord(char)
+    # print(asc, char)
+    if asc >= 48 and asc <= 57:
+        return False
 
-    while i <= n:
-        for j in range(0, n + 1):
-            for k in range(0, n + 1):
-                # print(i, j, k)
-                left = j * j
-                right = k * k
-                if left > i or right > i:
+    return True
+
+
+def clearDigits(s: str) -> str:
+    ans = ""
+    s = list(s)
+
+    for i in range(len(s)):
+        num_check_ans = check_char(s[i])
+
+        # Character
+        if num_check_ans:
+            continue
+        # Number
+        if not num_check_ans:
+            j = i - 1
+            while j >= 0:
+                if s[j] is None:
+                    j -= 1
+                if check_char(s[j]):
+                    s[j] = None
+                    s[i] = None
+                    j -= 1
                     break
-                temp = left + right
-
-                if temp == i and temp not in ans:
-                    ans.append(i)
-                if temp > i:
-                    break
-
-        i += 1
-
+    print(s)
+    for i in s:
+        if i is not None:
+            ans += str(i)
     return ans
 
 
-print(sum_square(50))
+def sum_of_digit(num: int) -> int:
+    ans = 0
+
+    while num != 0:
+        rem = num % 10
+        ans += rem
+        num //= 10
+    return ans
+
+
+def maximumSum(nums: List[int]) -> int:
+    ans = -1
+    n = len(nums)
+
+    # for i in range(n):
+    #     two_sum = 0
+    #     sum_of_i = sum_of_digit(nums[i])
+    #     # print(sum_of_i)
+    #     for j in range(i + 1, n):
+    #         sum_of_j = sum_of_digit(nums[j])
+
+    #         if sum_of_i == sum_of_j:
+    #             two_sum = nums[i] + nums[j]
+    #             ans = max(two_sum, ans)
+    mp = [-1] * 82
+    for num in nums:
+        digit_sum = sum_of_digit(num)
+        if mp[digit_sum] != -1:
+            ans = max(mp[digit_sum] + num, ans)
+
+        # not in mp
+        mp[digit_sum] = max(mp[digit_sum], num)
+    return ans
+
+
+print(maximumSum([18, 43, 36, 13, 7]))
+print(maximumSum([10, 12, 19, 14]))
+# print(clearDigits("cb34"))
 # print(numRescueBoats([1, 2], 3) == 1)
 # print(numRescueBoats([3, 2, 2, 1], 3) == 3)
 # print(numRescueBoats([3, 5, 3, 4], 5) == 4)

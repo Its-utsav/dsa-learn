@@ -1,6 +1,5 @@
 {
-  "ruff.enable": true,
-  // "ruff.nativeServer": "on",
-  "ruff.lint.run": "onSave"
+  "spellright.language": ["en"],
+  "spellright.documentTypes": ["markdown", "latex", "plaintext"]
   // "python.languageServer": "Default"
 }
