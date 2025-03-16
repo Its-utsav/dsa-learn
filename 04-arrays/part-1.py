@@ -75,9 +75,43 @@ class Solution:
 
         return ans
 
+    def bs_helper(self, nums: List[int], key: int) -> int:
+        n = len(nums)
+        ans = n
+        low, high = 0, n
+        while low <= high:
+            mid = (high + low) // 2
+            if nums[mid] < key:
+                low = mid + 1
+            else:
+                ans = mid
+                high = mid - 1
+        return ans
+
+    def maximumCount(self, nums: List[int]) -> int:
+        n = len(nums)
+        neg = self.bs_helper(nums, 0)  # total negtive number since 0 is not - or +
+        pos = n - self.bs_helper(nums, 1)
+        # print(neg, pos)
+        return max(neg, pos)
+
+    def maxOfSubarrays(self, arr, k):
+        ans = []
+        n = len(arr)
+        left = 0
+        valid = arr[left:k]
+        ans.append(max(valid))
+        for i in range(k + 1, n + 1):
+            left += 1
+            valid = arr[left:i]
+            ans.append(max(valid))
+        return ans
+
 
 s = Solution()
-print(s.minimumRecolor("WBBWWBBWBW", 7))
-print(s.minimumRecolor("WBWBBBW", 2))
+print(s.maxOfSubarrays([8, 5, 10, 7, 9, 4, 15, 12, 90, 13], 4))
+# print(s.maximumCount([-3, -2, -1, 0, 0, 1, 2]))
+# print(s.maximumCount([5, 20, 66, 1314]))
+
 # print(s.findMissingAndRepeatedValues([[9, 1, 7], [8, 9, 2], [3, 4, 6]]))
 # print(s.punishmentNumber(37))
