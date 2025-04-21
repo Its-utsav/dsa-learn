@@ -240,6 +240,19 @@ class LinkedList:
             current.next = new_node
             current = new_node
 
+    def reverse(self) -> Node:
+        current = self.head
+        prev_node = None  # first node became last node
+        # and last node ponits to the null
+        while current is not None:
+            next_node = current.next
+            current.next = prev_node
+            prev_node = current
+            current = next_node
+        # print(prev_node.data)
+        self.head = prev_node
+        return self.head
+
     @property
     def get_len(self):
         return self.__size
@@ -273,7 +286,8 @@ ll.insert_at_tail(5)
 # ll.insert_after_x_node(900, 1)
 
 print(ll)
-ll.delete_as_per_count(2)
+ll.reverse()
+# print(ll.hea)
 print(ll)
 # ll.create_a_ll([1, 2, 3, 4])
 # ll.remove_duplicates_from_sroted_list_i()

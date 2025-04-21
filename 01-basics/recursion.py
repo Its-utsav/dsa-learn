@@ -24,7 +24,6 @@ class Solution:
             return res + self.sumOf_3_Series(n - 1)
 
     def factorialNumbers(self, n: int) -> int:
-
         if n == 1:
             return 1
         else:

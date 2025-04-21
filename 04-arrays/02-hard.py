@@ -85,7 +85,6 @@ class Solution:
                 elif total_sum > 0:  # big value need small values
                     k -= 1
                 elif total_sum == 0:  # haha get triplest
-
                     temp = [nums[i], nums[j], nums[k]]
                     ans.append(temp)
                     j += 1
